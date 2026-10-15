@@ -6,165 +6,279 @@
 <title>Social Media Performance Report</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #1a1a2e; line-height: 1.6; }
-.container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+:root {
+  --bg: #151f36; --bg-hi: #1c2a45; --panel: #12182a; --panel-2: #171f33;
+  --line: rgba(255,255,255,.07); --line-2: rgba(255,255,255,.14);
+  --text: #e6ebf5; --muted: #8c99ad; --dim: #6c7a90;
+  --blue: #4ea8ff; --blue-2: #3e6be8; --violet: #b18cfe; --amber: #ffb246;
+  --teal: #2dd4bf; --pink: #f472b6; --green: #34d399; --red: #f25c5c;
+  --radius: 14px;
+}
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background:
+    radial-gradient(1100px 620px at 18% -8%, rgba(62,107,232,.22), transparent 62%),
+    radial-gradient(900px 520px at 96% 6%, rgba(177,140,254,.13), transparent 60%),
+    var(--bg);
+  color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased;
+}
+.mono { font-variant-numeric: tabular-nums; }
 
-.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 16px; margin-bottom: 30px; }
-.header h1 { font-size: 32px; font-weight: 700; margin-bottom: 8px; }
-.header .subtitle { font-size: 16px; opacity: 0.9; }
-.header .date-range { font-size: 14px; opacity: 0.7; margin-top: 4px; }
+/* ── Top bar ── */
+.topbar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 13px 22px; background: linear-gradient(180deg, rgba(37,55,91,.85), rgba(18,24,42,.72)); border-bottom: 1px solid var(--line-2); backdrop-filter: blur(8px); }
+.brand { display: flex; align-items: center; gap: 11px; }
+.logo { width: 38px; height: 38px; border-radius: 50%; flex: 0 0 38px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; color: #08111f; background: conic-gradient(from 210deg, var(--amber), var(--violet), var(--blue), var(--teal), var(--amber)); box-shadow: 0 0 16px rgba(78,168,255,.45); }
+.brand-txt { font-size: 13px; font-weight: 700; letter-spacing: .2px; }
+.brand-sub { font-size: 10px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+.badge { padding: 4px 11px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border: 1px solid transparent; }
+.badge.live { background: rgba(45,212,191,.16); color: #6ee7d7; border-color: rgba(45,212,191,.4); }
+.badge.week { background: rgba(78,168,255,.16); color: #9ccbff; border-color: rgba(78,168,255,.4); }
+.back { margin-left: 4px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255,255,255,.04); color: var(--muted); font-size: 11px; font-weight: 600; text-decoration: none; }
+.back:hover { color: var(--text); border-color: var(--blue); }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ctl { display: flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px; background: rgba(9,14,26,.62); border: 1px solid var(--line); font-size: 11px; color: var(--muted); font-weight: 600; }
+.ctl-lbl { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.seg { display: inline-flex; gap: 3px; }
+.seg i { font-style: normal; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 700; color: var(--muted); }
+.seg i.on { background: linear-gradient(135deg, var(--blue-2), var(--blue)); color: #fff; box-shadow: 0 0 12px rgba(62,107,232,.55); }
+.sw { width: 34px; height: 18px; border-radius: 999px; background: linear-gradient(135deg, var(--blue-2), var(--blue)); position: relative; box-shadow: 0 0 10px rgba(62,107,232,.5); }
+.sw::after { content: ''; position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+.clock { font-variant-numeric: tabular-nums; color: var(--text); font-weight: 700; }
 
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
-.kpi-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.kpi-card .label { font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-.kpi-card .value { font-size: 28px; font-weight: 700; color: #1a1a2e; }
-.kpi-card .sub { font-size: 13px; color: #9ca3af; margin-top: 4px; }
+/* ── Sub-header ── */
+.subhead { padding: 18px 22px 14px; border-bottom: 1px solid var(--line); }
+.subhead h1 { font-size: 21px; font-weight: 700; letter-spacing: -.01em; }
+.subhead .subtitle { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+.chiprow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+.chip { padding: 5px 12px; border-radius: 999px; background: rgba(9,14,26,.6); border: 1px solid var(--line-2); font-size: 10.5px; font-weight: 600; color: var(--text); }
+.chip b { color: var(--dim); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 9px; margin-right: 5px; }
 
-.section { background: white; border-radius: 12px; padding: 28px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.section h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; color: #1a1a2e; display: flex; align-items: center; gap: 10px; }
-.section h2::before { content: ''; width: 4px; height: 24px; background: #667eea; border-radius: 2px; }
+/* ── Shell: sidebar + main ── */
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 20px; padding: 20px 22px 26px; max-width: 1780px; margin: 0 auto; align-items: start; }
+.sidebar { position: sticky; top: 16px; background: linear-gradient(180deg, rgba(23,44,87,.55), rgba(18,24,42,.9)); border: 1px solid var(--line-2); border-radius: var(--radius); padding: 14px 12px; }
+.side-group { font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); padding: 10px 10px 7px; }
+.powered { margin-top: 14px; padding: 11px; border-radius: 11px; background: rgba(9,14,26,.6); border: 1px solid var(--line); text-align: center; }
+.powered .pw-lbl { font-size: 8.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.powered .pw-mark { margin-top: 7px; font-size: 12px; font-weight: 800; letter-spacing: .04em; background: linear-gradient(90deg, var(--amber), var(--violet), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.side-note { padding: 9px 10px 2px; font-size: 10px; color: #8c99ad; line-height: 1.45; }
 
-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th { text-align: left; padding: 12px 16px; background: #f8fafc; color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #e5e7eb; }
-td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: #f8fafc; }
-
-.platform-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
-.platform-link { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px 4px 0; border: 0; border-radius: 8px; background: transparent; color: inherit; font: inherit; font-weight: 600; cursor: pointer; text-align: left; }
-.platform-link:hover, .platform-link:focus-visible { color: #667eea; background: #eef2ff; outline: none; }
-.platform-link[aria-pressed="true"] { color: #667eea; background: #e0e7ff; }
-.platform-link:focus-visible { box-shadow: 0 0 0 3px rgba(102,126,234,.28); }
-.platform-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; }
-.highlight { font-weight: 700; color: #667eea; }
-
-.bar-container { display: flex; align-items: center; gap: 10px; }
-.bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
-
-.trend-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
-.trend-row:last-child { border-bottom: none; }
-.trend-month { width: 80px; font-size: 13px; color: #6b7280; }
-.trend-bar-wrap { flex: 1; height: 24px; background: #f1f5f9; border-radius: 6px; overflow: hidden; position: relative; }
-.trend-bar-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 6px; display: flex; align-items: center; padding-left: 10px; }
-.trend-value { font-size: 12px; color: white; font-weight: 600; }
-
-.chart-legend { display: flex; gap: 18px; margin: -8px 0 18px; color: #6b7280; font-size: 13px; }
-.chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
-.legend-swatch { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
-.views-swatch { background: #667eea; }
-.likes-swatch { background: #f59e0b; }
-.weekly-chart { height: 270px; display: flex; align-items: flex-end; justify-content: space-around; gap: 16px; padding: 0 8px 8px; border-bottom: 1px solid #e5e7eb; }
-.chart-group { height: 100%; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; min-width: 70px; }
-.chart-bars { height: 230px; display: flex; align-items: flex-end; gap: 7px; }
-.chart-bar { width: 28px; min-height: 2px; border-radius: 5px 5px 0 0; position: relative; transition: opacity 0.2s; }
-.chart-bar:hover { opacity: 0.78; }
-.chart-bar span { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 10px; color: #6b7280; white-space: nowrap; margin-bottom: 4px; }
-.views-bar { background: #667eea; }
-.likes-bar { background: #f59e0b; }
-.chart-label { margin-top: 10px; font-size: 12px; color: #6b7280; }
-.weekly-table { margin-top: 24px; }
-
-.insight { padding: 14px 18px; background: #f0f4ff; border-left: 4px solid #667eea; border-radius: 0 8px 8px 0; margin-bottom: 12px; font-size: 14px; }
-.insight strong { color: #667eea; }
-
-.weekly-controls { display: grid; grid-template-columns: repeat(3, minmax(160px, 1fr)); gap: 12px; margin-bottom: 22px; }
-.weekly-controls label { font-size: 12px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
-.weekly-controls select { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; color: #1a1a2e; font-size: 14px; }
-.weekly-chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.chart-card { min-height: 330px; padding: 18px; background: #fbfcff; border: 1px solid #eef2f7; border-radius: 10px; }
-.chart-card.full { grid-column: 1 / -1; }
-.chart-card h3 { font-size: 15px; color: #374151; margin-bottom: 12px; }
-.chart-wrap { height: 270px; position: relative; }
-.chart-note { color: #9ca3af; font-size: 12px; margin-top: 10px; }
-
-/* ── Sub-button navigation (2026-10-15) ──
-   Two views under one page: the social media dashboard and the marketing content
-   calendar. Views are hidden by default and one carries .active, so the cron's
-   single-file output still works with no router. */
-.tabbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; background: #fff; padding: 10px; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.tab { flex: 1 1 240px; display: flex; align-items: center; gap: 12px; padding: 14px 18px; border: 0; border-radius: 10px; background: transparent; color: #4b5563; font: inherit; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; transition: background .18s, color .18s; }
-.tab:hover { background: #f3f4f6; color: #1a1a2e; }
-.tab[aria-selected="true"] { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
-.tab:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(102,126,234,.35); }
-.tab .tab-ico { width: 34px; height: 34px; flex: 0 0 34px; border-radius: 9px; background: rgba(102,126,234,.14); display: flex; align-items: center; justify-content: center; font-size: 17px; }
-.tab[aria-selected="true"] .tab-ico { background: rgba(255,255,255,.22); }
-.tab .tab-sub { display: block; font-size: 12px; font-weight: 500; opacity: .78; margin-top: 2px; }
+/* the two sub-buttons, styled as sidebar nav items */
+.tabbar { display: flex; flex-direction: column; gap: 5px; }
+.tab { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 600; text-align: left; cursor: pointer; transition: background .16s, color .16s, border-color .16s; position: relative; }
+.tab:hover { background: rgba(255,255,255,.05); color: var(--text); }
+.tab[aria-selected="true"] { background: linear-gradient(90deg, rgba(62,107,232,.30), rgba(62,107,232,.06)); color: #fff; border-color: rgba(78,168,255,.4); }
+.tab[aria-selected="true"]::before { content: ''; position: absolute; left: 0; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--blue); box-shadow: 0 0 10px var(--blue); }
+.tab:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(78,168,255,.3); }
+.tab .tab-ico { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 8px; background: rgba(78,168,255,.14); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.tab[aria-selected="true"] .tab-ico { background: rgba(78,168,255,.3); }
+.tab .tab-sub { display: block; font-size: 10px; font-weight: 500; color: var(--dim); margin-top: 1px; }
+.tab[aria-selected="true"] .tab-sub { color: #a8c4e8; }
 .view { display: none; }
 .view.active { display: block; }
 
+/* ── Section cards ── */
+.section { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin-bottom: 18px; box-shadow: 0 10px 28px rgba(0,0,0,.32); }
+.section h2 { font-size: 14px; font-weight: 700; letter-spacing: .02em; margin-bottom: 16px; color: var(--text); display: flex; align-items: center; gap: 10px; }
+.section h2::before { content: ''; width: 3px; height: 18px; border-radius: 2px; background: linear-gradient(180deg, var(--blue), var(--violet)); box-shadow: 0 0 10px rgba(78,168,255,.7); }
+.section-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.section-head-row h2 { margin-bottom: 0; }
+
+/* ── KPI stat cards ── */
+.kpi-grid, .cal-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.kpi-card { position: relative; background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; overflow: hidden; }
+.kpi-card::after { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(180deg, var(--blue), var(--violet)); opacity: .85; }
+.kpi-card .label { font-size: 10px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; color: #9aa8bd; margin-bottom: 7px; }
+.kpi-card .value { font-size: 26px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.kpi-card .sub { font-size: 10.5px; color: var(--muted); margin-top: 4px; }
+
+/* ── Ring gauge cards ── */
+.ring-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 18px; }
+.ring-card { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 16px 13px; text-align: center; position: relative; overflow: hidden; }
+.ring-card::before { content: ''; position: absolute; top: -46%; left: 50%; transform: translateX(-50%); width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, var(--glow, rgba(78,168,255,.3)), transparent 70%); pointer-events: none; }
+.ring-card .rc-name { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--accent, var(--blue)); }
+.ring-card .rc-sub { font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #9aa8bd; margin-top: 2px; }
+.ring-wrap { position: relative; width: 132px; height: 132px; margin: 12px auto 10px; }
+.ring-wrap svg { width: 132px; height: 132px; display: block; filter: drop-shadow(0 0 6px var(--glow, rgba(78,168,255,.55))); }
+.ring-val { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.ring-val b { font-size: 27px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1; }
+.ring-val span { font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-top: 3px; }
+.metrics { text-align: left; border-top: 1px solid var(--line); padding-top: 9px; }
+.mrow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 2.5px 0; font-size: 11px; }
+.mrow i { font-style: normal; font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: #9aa8bd; }
+.mrow b { font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.pos { color: var(--green) !important; }
+.neg { color: var(--red) !important; }
+
+/* ── Tables ── */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; padding: 9px 12px; background: rgba(9,14,26,.55); color: var(--dim); font-weight: 700; font-size: 9.5px; text-transform: uppercase; letter-spacing: .1em; border-bottom: 1px solid var(--line-2); }
+td { padding: 11px 12px; border-bottom: 1px solid var(--line); color: var(--text); font-variant-numeric: tabular-nums; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,.028); }
+.platform-badge { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+.platform-link { display: inline-flex; align-items: center; gap: 8px; padding: 4px 8px 4px 0; border: 0; border-radius: 8px; background: transparent; color: inherit; font: inherit; font-weight: 600; cursor: pointer; text-align: left; }
+.platform-link:hover, .platform-link:focus-visible { color: var(--blue); background: rgba(78,168,255,.1); outline: none; }
+.platform-link[aria-pressed="true"] { color: var(--blue); background: rgba(78,168,255,.16); }
+.platform-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 10.5px; font-weight: 800; color: #08111f; }
+.highlight { font-weight: 700; color: var(--blue); }
+.bar-container { display: flex; align-items: center; gap: 10px; }
+.bar { flex: 1; height: 7px; background: rgba(255,255,255,.08); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width .3s; box-shadow: 0 0 8px currentColor; }
+
+/* ── Trend rows ── */
+.trend-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.trend-row:last-child { border-bottom: none; }
+.trend-month { width: 76px; font-size: 11px; color: var(--muted); }
+.trend-bar-wrap { flex: 1; height: 22px; background: rgba(255,255,255,.05); border-radius: 6px; overflow: hidden; }
+.trend-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue-2), var(--violet)); border-radius: 6px; display: flex; align-items: center; padding-left: 10px; box-shadow: 0 0 14px rgba(78,168,255,.4); }
+.trend-value { font-size: 10.5px; color: #fff; font-weight: 700; white-space: nowrap; }
+
+/* ── Charts ── */
+.chart-legend { display: flex; gap: 18px; margin: -6px 0 16px; color: var(--muted); font-size: 11.5px; }
+.chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.views-swatch { background: var(--blue); }
+.likes-swatch { background: var(--amber); }
+.weekly-chart { height: 236px; display: flex; align-items: flex-end; justify-content: space-around; gap: 14px; padding: 0 8px 8px; border-bottom: 1px solid var(--line-2); }
+.chart-group { height: 100%; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; min-width: 62px; }
+.chart-bars { height: 198px; display: flex; align-items: flex-end; gap: 6px; }
+.chart-bar { width: 24px; min-height: 2px; border-radius: 5px 5px 0 0; position: relative; transition: opacity .2s; }
+.chart-bar:hover { opacity: .78; }
+.chart-bar span { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: 9.5px; color: var(--muted); white-space: nowrap; margin-bottom: 4px; }
+.views-bar { background: var(--blue); box-shadow: 0 0 12px rgba(78,168,255,.5); }
+.likes-bar { background: var(--amber); box-shadow: 0 0 12px rgba(255,178,70,.5); }
+.chart-label { margin-top: 9px; font-size: 10.5px; color: var(--muted); }
+.weekly-table { margin-top: 20px; }
+.insight { padding: 12px 16px; background: rgba(78,168,255,.08); border-left: 3px solid var(--blue); border-radius: 0 8px 8px 0; margin-bottom: 10px; font-size: 12.5px; color: var(--text); }
+.insight strong { color: var(--blue); }
+.weekly-controls { display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 12px; margin-bottom: 18px; }
+.weekly-controls label { font-size: 9.5px; color: var(--dim); font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+.weekly-controls select { display: block; width: 100%; margin-top: 5px; padding: 9px 11px; border: 1px solid var(--line-2); border-radius: 9px; background: rgba(9,14,26,.7); color: var(--text); font-size: 12.5px; font-family: inherit; }
+.weekly-chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.chart-card { min-height: 320px; padding: 16px; background: rgba(9,14,26,.4); border: 1px solid var(--line); border-radius: 11px; }
+.chart-card.full { grid-column: 1 / -1; }
+.chart-card h3 { font-size: 12.5px; color: var(--text); margin-bottom: 12px; font-weight: 700; }
+.chart-wrap { height: 262px; position: relative; }
+.chart-note { color: var(--dim); font-size: 10.5px; margin-top: 9px; }
+
 /* ── Marketing content calendar ── */
-.cal-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 24px; }
-.cal-note { color: #6b7280; font-size: 13px; margin: -8px 0 18px; }
-.cal-controls { display: grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.cal-controls label { font-size: 12px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; }
-.cal-controls select, .cal-controls input { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; color: #1a1a2e; font-size: 14px; font-family: inherit; }
-.cal-sub { font-size: 15px; font-weight: 700; color: #374151; margin: 26px 0 14px; display: flex; align-items: center; gap: 9px; }
-.cal-sub:first-of-type { margin-top: 18px; }
-.cal-badge { display: inline-block; min-width: 26px; padding: 2px 9px; border-radius: 999px; background: #eef2ff; color: #4f46e5; font-size: 12px; font-weight: 700; text-align: center; }
-.post-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
-.post-card { background: #fbfcff; border: 1px solid #eef2f7; border-left: 3px solid #c7d2fe; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 9px; }
-.post-card[data-status="published"] { border-left-color: #86efac; }
-.post-card[data-status="rejected"] { border-left-color: #fca5a5; }
-.post-card[data-status="topost"] { border-left-color: #fcd34d; }
+.cal-note { color: var(--muted); font-size: 11.5px; margin: -6px 0 16px; }
+.cal-controls { display: grid; grid-template-columns: repeat(4, minmax(150px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.cal-controls label { font-size: 9.5px; color: var(--dim); font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+.cal-controls select, .cal-controls input { display: block; width: 100%; margin-top: 5px; padding: 9px 11px; border: 1px solid var(--line-2); border-radius: 9px; background: rgba(9,14,26,.7); color: var(--text); font-size: 12.5px; font-family: inherit; }
+.cal-controls input::placeholder { color: #55637a; }
+.cal-sub { font-size: 12.5px; font-weight: 700; color: var(--text); margin: 22px 0 12px; display: flex; align-items: center; gap: 9px; letter-spacing: .02em; }
+.cal-sub:first-of-type { margin-top: 16px; }
+.cal-badge { display: inline-block; min-width: 24px; padding: 2px 9px; border-radius: 999px; background: rgba(78,168,255,.16); color: #9ccbff; font-size: 10.5px; font-weight: 800; text-align: center; border: 1px solid rgba(78,168,255,.32); }
+.post-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 13px; }
+.post-card { background: linear-gradient(180deg, var(--panel-2), var(--panel)); border: 1px solid var(--line); border-left: 3px solid var(--amber); border-radius: 11px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+.post-card[data-status="published"] { border-left-color: var(--green); }
+.post-card[data-status="rejected"] { border-left-color: var(--red); }
+.post-card[data-status="topost"] { border-left-color: var(--amber); }
 .post-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-.post-top h4 { font-size: 14px; font-weight: 700; color: #1a1a2e; line-height: 1.35; margin: 0; }
-.pill { flex: 0 0 auto; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-.pill.done { background: #dcfce7; color: #15803d; }
-.pill.wip { background: #fef3c7; color: #b45309; }
-.pill.plan { background: #e0e7ff; color: #4338ca; }
-.pill.idle { background: #f1f5f9; color: #64748b; }
-.pill.bad { background: #fee2e2; color: #b91c1c; }
-.post-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: #6b7280; }
-.post-meta .mi b { color: #374151; font-weight: 600; }
-.post-meta .mi.boost { color: #b45309; font-weight: 700; }
-.post-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.pchip { width: 26px; height: 26px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; letter-spacing: .2px; }
-.pchip.off { opacity: .45; }
-.post-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.fmtch { padding: 2px 9px; border-radius: 6px; background: #f1f5f9; color: #475569; font-size: 11px; font-weight: 600; }
-.fmtch.pub { background: #dcfce7; color: #15803d; }
-.fmtch.media { background: #eef2ff; color: #4338ca; }
-.eng-row { display: flex; flex-wrap: wrap; gap: 6px 16px; padding-top: 8px; border-top: 1px dashed #e5e7eb; font-size: 12px; color: #6b7280; }
-.eng-row .eng b { color: #1a1a2e; }
-.cap { font-size: 12px; }
-.cap summary { cursor: pointer; color: #4f46e5; font-weight: 600; }
+.post-top h4 { font-size: 12.5px; font-weight: 700; color: #fff; line-height: 1.35; margin: 0; }
+.pill { flex: 0 0 auto; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; border: 1px solid transparent; }
+.pill.done { background: rgba(52,211,153,.16); color: #6ee7b7; border-color: rgba(52,211,153,.34); }
+.pill.wip { background: rgba(255,178,70,.16); color: #ffcd85; border-color: rgba(255,178,70,.34); }
+.pill.plan { background: rgba(177,140,254,.16); color: #cdb6ff; border-color: rgba(177,140,254,.34); }
+.pill.idle { background: rgba(140,153,173,.14); color: #a9b6c9; border-color: rgba(140,153,173,.3); }
+.pill.bad { background: rgba(242,92,92,.16); color: #ff9b9b; border-color: rgba(242,92,92,.34); }
+.post-meta { display: flex; flex-wrap: wrap; gap: 5px 13px; font-size: 10.5px; color: var(--muted); }
+.post-meta .mi b { color: var(--dim); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 9px; margin-right: 4px; }
+.post-meta .mi.boost { color: var(--amber); font-weight: 800; }
+.post-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.pchip { width: 24px; height: 24px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; letter-spacing: .2px; }
+.pchip.off { opacity: .3; }
+.post-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.fmtch { padding: 2px 8px; border-radius: 6px; background: rgba(255,255,255,.06); color: #a9b6c9; font-size: 9.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.fmtch.pub { background: rgba(52,211,153,.16); color: #6ee7b7; }
+.fmtch.media { background: rgba(78,168,255,.14); color: #9ccbff; }
+.eng-row { display: flex; flex-wrap: wrap; gap: 5px 15px; padding-top: 8px; border-top: 1px dashed var(--line-2); font-size: 11px; color: var(--muted); }
+.eng-row .eng b { color: var(--text); }
+.cap { font-size: 11px; }
+.cap summary { cursor: pointer; color: var(--blue); font-weight: 700; }
 .cap summary:hover { text-decoration: underline; }
-.cap-body { margin-top: 8px; padding: 10px 12px; background: #fff; border: 1px solid #eef2f7; border-radius: 8px; color: #374151; white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
-.cap.none { color: #9ca3af; font-style: italic; }
-.remark { font-size: 12px; color: #6b7280; }
-.remark b { color: #374151; }
-.dash { color: #9ca3af; }
-.cal-empty { text-align: center; color: #9ca3af; padding: 26px; font-size: 14px; }
-@media (max-width: 1100px) { .cal-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 768px) { .cal-controls { grid-template-columns: 1fr; } .post-grid { grid-template-columns: 1fr; } .tab { flex: 1 1 100%; } }
+.cap-body { margin-top: 8px; padding: 10px 12px; background: rgba(9,14,26,.65); border: 1px solid var(--line); border-radius: 8px; color: #c8d3e4; white-space: pre-wrap; word-break: break-word; line-height: 1.55; }
+.cap.none { color: var(--dim); font-style: italic; }
+.remark { font-size: 11px; color: var(--muted); }
+.remark b { color: var(--dim); }
+.dash { color: var(--dim); }
+.cal-empty { text-align: center; color: var(--dim); padding: 24px; font-size: 12.5px; }
 
-.footer { text-align: center; padding: 20px; color: #9ca3af; font-size: 12px; }
+.footer { text-align: center; padding: 20px; color: var(--dim); font-size: 10.5px; }
 
-@media (max-width: 768px) { .container { padding: 20px 12px; } .header { padding: 24px; } .header h1 { font-size: 24px; } .weekly-controls { grid-template-columns: 1fr; } .weekly-chart-grid { grid-template-columns: 1fr; } .chart-card.full { grid-column: auto; } }
+@media (max-width: 1180px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .tabbar { flex-direction: row; flex-wrap: wrap; }
+  .tab { flex: 1 1 220px; }
+  .weekly-chart-grid, .cal-controls, .ring-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chart-card.full { grid-column: auto; }
+}
+@media (max-width: 768px) {
+  .topbar { padding: 12px 14px; }
+  .shell { padding: 14px; gap: 14px; }
+  .section { padding: 15px; }
+  .subhead h1 { font-size: 17px; }
+  .weekly-controls, .weekly-chart-grid, .cal-controls, .post-grid, .ring-grid { grid-template-columns: 1fr; }
+  .tab { flex: 1 1 100%; }
+}
 </style>
 </head>
 <body>
-<div class="container">
-
-<div class="tabbar" role="tablist" aria-label="Report sections">
-  <button type="button" class="tab" role="tab" id="tab-social" aria-selected="true" aria-controls="view-social" data-view="view-social">
-    <span class="tab-ico" aria-hidden="true">&#128202;</span>
-    <span>Social Media Dashboard<span class="tab-sub">Daily gain &middot; Weekly &amp; Monthly performance</span></span>
-  </button>
-  <button type="button" class="tab" role="tab" id="tab-calendar" aria-selected="false" aria-controls="view-calendar" data-view="view-calendar">
-    <span class="tab-ico" aria-hidden="true">&#128197;</span>
-    <span>Marketing Content Calendar<span class="tab-sub">Every post &middot; published and still to post</span></span>
-  </button>
+<div class="topbar">
+  <div class="brand">
+    <div class="logo">SM</div>
+    <div>
+      <div class="brand-txt">Game Engine</div>
+      <div class="brand-sub">Social Media Analytics</div>
+    </div>
+  </div>
+  <span class="badge week">Weekly</span>
+  <span class="badge live">&#9679; Live data</span>
+  <div class="topbar-right">
+    <span class="ctl"><span class="ctl-lbl">View</span><span class="seg"><i class="on">Reports</i><i>Calendar</i></span></span>
+    <span class="ctl"><span class="ctl-lbl">Dark</span><span class="sw" aria-hidden="true"></span></span>
+    <span class="ctl"><span class="seg"><i class="on">EN</i><i>&#20013;&#25991;</i></span></span>
+    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 15, 2026 at 05:19 PM PHT</span></span>
+  </div>
 </div>
 
-<div class="view active" id="view-social">
-
-<div class="header">
-  <h1>Social Media Performance Report</h1>
-  <div class="subtitle">As of October 15, 2026 at 05:04 PM PHT</div>
-  <div class="date-range">Reporting Period: Nov 2025 – Oct 2026</div>
+<div class="subhead">
+  <h1>Social Media Performance &amp; Marketing Content Calendar</h1>
+  <div class="subtitle">Product: Game Engine &middot; 6 platforms &middot; Daily gain, weekly &amp; monthly performance &middot; Marketing content calendar &middot; Settled data from the Lark Base</div>
+  <div class="chiprow">
+    <span class="chip"><b>Period</b>Nov 2025 – Oct 2026</span>
+    <span class="chip"><b>Platforms</b>Facebook &middot; Instagram &middot; TikTok &middot; YouTube &middot; LinkedIn &middot; X</span>
+    <span class="chip"><b>Source</b>Lark Base &middot; live</span>
+    <span class="chip"><b>Total views</b>40,910</span>
+  </div>
 </div>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="side-group">Social Media</div>
+    <div class="tabbar" role="tablist" aria-label="Report sections">
+      <button type="button" class="tab" role="tab" id="tab-social" aria-selected="true" aria-controls="view-social" data-view="view-social">
+        <span class="tab-ico" aria-hidden="true">&#128202;</span>
+        <span>Social Media Dashboard<span class="tab-sub">Daily &middot; Weekly &middot; Monthly</span></span>
+      </button>
+      <button type="button" class="tab" role="tab" id="tab-calendar" aria-selected="false" aria-controls="view-calendar" data-view="view-calendar">
+        <span class="tab-ico" aria-hidden="true">&#128197;</span>
+        <span>Marketing Content Calendar<span class="tab-sub">Posts &middot; published &amp; to post</span></span>
+      </button>
+    </div>
+    <div class="side-note">Both views refresh automatically from the Lark Base. Use the tabs to switch.</div>
+    <div class="powered"><div class="pw-lbl">Powered by</div><div class="pw-mark">GAME ENGINE</div></div>
+  </aside>
+  <main class="main">
+
+    <div class="view active" id="view-social">
+
+
+
+<div class="section-head-row"><h2>Platform View Share</h2><span class="badge week">12 months</span></div>
+<div class="ring-grid"><article class="ring-card" style="--accent:#4ea8ff;--glow:#4ea8ff55"><div class="rc-name">Facebook</div><div class="rc-sub">Share of views</div><div class="ring-wrap"><svg viewBox="0 0 132 132" role="img" aria-label="Facebook view share 66.3%"><circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/><circle cx="66" cy="66" r="52" fill="none" stroke="#4ea8ff" stroke-width="12" stroke-linecap="round" stroke-dasharray="216.63 110.10" transform="rotate(-90 66 66)"/></svg><div class="ring-val"><b>66.3%</b><span>of views</span></div></div><div class="metrics"><div class="mrow"><i>Views</i><b>27,124</b></div><div class="mrow"><i>Reactions</i><b>2,437</b></div><div class="mrow"><i>Followers</i><b>2,018</b></div><div class="mrow"><i>Content</i><b>41</b></div></div></article><article class="ring-card" style="--accent:#b18cfe;--glow:#b18cfe55"><div class="rc-name">TikTok</div><div class="rc-sub">Share of views</div><div class="ring-wrap"><svg viewBox="0 0 132 132" role="img" aria-label="TikTok view share 9.9%"><circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/><circle cx="66" cy="66" r="52" fill="none" stroke="#b18cfe" stroke-width="12" stroke-linecap="round" stroke-dasharray="32.19 294.54" transform="rotate(-90 66 66)"/></svg><div class="ring-val"><b>9.9%</b><span>of views</span></div></div><div class="metrics"><div class="mrow"><i>Views</i><b>4,031</b></div><div class="mrow"><i>Reactions</i><b>97</b></div><div class="mrow"><i>Followers</i><b>115</b></div><div class="mrow"><i>Content</i><b>28</b></div></div></article><article class="ring-card" style="--accent:#f472b6;--glow:#f472b655"><div class="rc-name">Instagram</div><div class="rc-sub">Share of views</div><div class="ring-wrap"><svg viewBox="0 0 132 132" role="img" aria-label="Instagram view share 7.3%"><circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/><circle cx="66" cy="66" r="52" fill="none" stroke="#f472b6" stroke-width="12" stroke-linecap="round" stroke-dasharray="23.69 303.04" transform="rotate(-90 66 66)"/></svg><div class="ring-val"><b>7.3%</b><span>of views</span></div></div><div class="metrics"><div class="mrow"><i>Views</i><b>2,966</b></div><div class="mrow"><i>Reactions</i><b>2,069</b></div><div class="mrow"><i>Followers</i><b>84</b></div><div class="mrow"><i>Content</i><b>41</b></div></div></article><article class="ring-card" style="--accent:#ff5c5c;--glow:#ff5c5c55"><div class="rc-name">YouTube</div><div class="rc-sub">Share of views</div><div class="ring-wrap"><svg viewBox="0 0 132 132" role="img" aria-label="YouTube view share 6.5%"><circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/><circle cx="66" cy="66" r="52" fill="none" stroke="#ff5c5c" stroke-width="12" stroke-linecap="round" stroke-dasharray="21.09 305.64" transform="rotate(-90 66 66)"/></svg><div class="ring-val"><b>6.5%</b><span>of views</span></div></div><div class="metrics"><div class="mrow"><i>Views</i><b>2,641</b></div><div class="mrow"><i>Reactions</i><b>70</b></div><div class="mrow"><i>Followers</i><b>4</b></div><div class="mrow"><i>Content</i><b>29</b></div></div></article><article class="ring-card" style="--accent:#2dd4bf;--glow:#2dd4bf55"><div class="rc-name">LinkedIn</div><div class="rc-sub">Share of views</div><div class="ring-wrap"><svg viewBox="0 0 132 132" role="img" aria-label="LinkedIn view share 7.8%"><circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/><circle cx="66" cy="66" r="52" fill="none" stroke="#2dd4bf" stroke-width="12" stroke-linecap="round" stroke-dasharray="25.33 301.40" transform="rotate(-90 66 66)"/></svg><div class="ring-val"><b>7.8%</b><span>of views</span></div></div><div class="metrics"><div class="mrow"><i>Views</i><b>3,172</b></div><div class="mrow"><i>Reactions</i><b>1,210</b></div><div class="mrow"><i>Followers</i><b>77</b></div><div class="mrow"><i>Content</i><b>40</b></div></div></article><article class="ring-card" style="--accent:#9ccbff;--glow:#9ccbff55"><div class="rc-name">X (Twitter)</div><div class="rc-sub">Share of views</div><div class="ring-wrap"><svg viewBox="0 0 132 132" role="img" aria-label="X (Twitter) view share 2.4%"><circle cx="66" cy="66" r="52" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="12"/><circle cx="66" cy="66" r="52" fill="none" stroke="#9ccbff" stroke-width="12" stroke-linecap="round" stroke-dasharray="7.79 318.94" transform="rotate(-90 66 66)"/></svg><div class="ring-val"><b>2.4%</b><span>of views</span></div></div><div class="metrics"><div class="mrow"><i>Views</i><b>976</b></div><div class="mrow"><i>Reactions</i><b>66</b></div><div class="mrow"><i>Followers</i><b>83</b></div><div class="mrow"><i>Content</i><b>53</b></div></div></article></div>
 
 <div class="kpi-grid">
   <div class="kpi-card">
@@ -3103,25 +3217,28 @@ Join us as we power the future of gaming — because here, you can truly GAME EV
 </div>
 
 </div>
+  </main>
+</div>
 
 <div class="footer">
-  Generated on October 15, 2026 at 05:04 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
+  Generated on October 15, 2026 at 05:19 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
 </div>
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 <script>
+Chart.defaults.color='#8c99ad';Chart.defaults.borderColor='rgba(255,255,255,.08)';Chart.defaults.font.family="Inter,-apple-system,'Segoe UI',Roboto,sans-serif";
 const weeklyComparison = {"months":[{"key":"2025-11","label":"Nov 2025"},{"key":"2025-12","label":"Dec 2025"},{"key":"2026-01","label":"Jan 2026"},{"key":"2026-02","label":"Feb 2026"},{"key":"2026-03","label":"Mar 2026"},{"key":"2026-04","label":"Apr 2026"},{"key":"2026-05","label":"May 2026"},{"key":"2026-06","label":"Jun 2026"},{"key":"2026-07","label":"Jul 2026"},{"key":"2026-08","label":"Aug 2026"},{"key":"2026-09","label":"Sep 2026"},{"key":"2026-10","label":"Oct 2026"}],"rows":[{"month":"2025-11","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 1","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 2","platform":"Facebook","views":955,"likes":4,"shares":0,"content":0},{"month":"2025-11","week":"Week 2","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":1},{"month":"2025-11","week":"Week 3","platform":"Facebook","views":1575,"likes":7,"shares":0,"content":0},{"month":"2025-11","week":"Week 3","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 3","platform":"X (Twitter)","views":28,"likes":0,"shares":0,"content":1},{"month":"2025-11","week":"Week 4","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 4","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-11","week":"Week 5","platform":"X (Twitter)","views":25,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 1","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 1","platform":"X (Twitter)","views":25,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 2","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 2","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 3","platform":"Facebook","views":14973,"likes":65,"shares":23,"content":0},{"month":"2025-12","week":"Week 3","platform":"TikTok","views":87,"likes":0,"shares":0,"content":2},{"month":"2025-12","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 3","platform":"X (Twitter)","views":62,"likes":0,"shares":0,"content":2},{"month":"2025-12","week":"Week 4","platform":"Facebook","views":772,"likes":17,"shares":0,"content":0},{"month":"2025-12","week":"Week 4","platform":"TikTok","views":1,"likes":0,"shares":0,"content":1},{"month":"2025-12","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 5","platform":"Facebook","views":253,"likes":5,"shares":0,"content":0},{"month":"2025-12","week":"Week 5","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2025-12","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":1},{"month":"2026-01","week":"Week 1","platform":"Facebook","views":775,"likes":16,"shares":0,"content":0},{"month":"2026-01","week":"Week 1","platform":"TikTok","views":338,"likes":4,"shares":0,"content":0},{"month":"2026-01","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 1","platform":"X (Twitter)","views":121,"likes":5,"shares":0,"content":2},{"month":"2026-01","week":"Week 2","platform":"Facebook","views":708,"likes":48,"shares":0,"content":0},{"month":"2026-01","week":"Week 2","platform":"TikTok","views":2,"likes":18,"shares":0,"content":0},{"month":"2026-01","week":"Week 2","platform":"Instagram","views":5,"likes":1,"shares":0,"content":0},{"month":"2026-01","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 3","platform":"Facebook","views":369,"likes":18,"shares":1,"content":0},{"month":"2026-01","week":"Week 3","platform":"TikTok","views":3,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 3","platform":"X (Twitter)","views":127,"likes":0,"shares":0,"content":1},{"month":"2026-01","week":"Week 4","platform":"Facebook","views":1165,"likes":243,"shares":0,"content":0},{"month":"2026-01","week":"Week 4","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 4","platform":"LinkedIn","views":425,"likes":141,"shares":0,"content":2},{"month":"2026-01","week":"Week 4","platform":"X (Twitter)","views":24,"likes":0,"shares":0,"content":2},{"month":"2026-01","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-01","week":"Week 5","platform":"LinkedIn","views":505,"likes":350,"shares":0,"content":0},{"month":"2026-01","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 1","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 1","platform":"LinkedIn","views":518,"likes":189,"shares":0,"content":0},{"month":"2026-02","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 2","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 2","platform":"TikTok","views":4,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 3","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 3","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 3","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 4","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 4","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-02","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 1","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 2","platform":"Facebook","views":105,"likes":5,"shares":0,"content":0},{"month":"2026-03","week":"Week 2","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 3","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 3","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 3","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 4","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 4","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-03","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 1","platform":"TikTok","views":3,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 2","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 2","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 3","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 3","platform":"TikTok","views":2,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 3","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 4","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 4","platform":"TikTok","views":5,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 4","platform":"Instagram","views":10,"likes":1,"shares":0,"content":0},{"month":"2026-04","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-04","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 1","platform":"TikTok","views":2,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":2},{"month":"2026-05","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 2","platform":"Facebook","views":376,"likes":42,"shares":2,"content":1},{"month":"2026-05","week":"Week 2","platform":"TikTok","views":3,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 2","platform":"Instagram","views":6,"likes":2,"shares":0,"content":1},{"month":"2026-05","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":1},{"month":"2026-05","week":"Week 2","platform":"LinkedIn","views":26,"likes":0,"shares":0,"content":1},{"month":"2026-05","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":2},{"month":"2026-05","week":"Week 3","platform":"Facebook","views":84,"likes":7,"shares":1,"content":1},{"month":"2026-05","week":"Week 3","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 3","platform":"Instagram","views":3,"likes":1,"shares":0,"content":1},{"month":"2026-05","week":"Week 3","platform":"YouTube","views":3,"likes":3,"shares":0,"content":1},{"month":"2026-05","week":"Week 3","platform":"LinkedIn","views":3,"likes":3,"shares":0,"content":1},{"month":"2026-05","week":"Week 3","platform":"X (Twitter)","views":22,"likes":1,"shares":0,"content":1},{"month":"2026-05","week":"Week 4","platform":"Facebook","views":319,"likes":22,"shares":0,"content":1},{"month":"2026-05","week":"Week 4","platform":"TikTok","views":2,"likes":1,"shares":0,"content":0},{"month":"2026-05","week":"Week 4","platform":"Instagram","views":3,"likes":2,"shares":0,"content":1},{"month":"2026-05","week":"Week 4","platform":"YouTube","views":5,"likes":5,"shares":0,"content":1},{"month":"2026-05","week":"Week 4","platform":"LinkedIn","views":53,"likes":3,"shares":0,"content":0},{"month":"2026-05","week":"Week 4","platform":"X (Twitter)","views":34,"likes":2,"shares":0,"content":1},{"month":"2026-05","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-05","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 1","platform":"TikTok","views":3,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 2","platform":"Facebook","views":123,"likes":34,"shares":1,"content":0},{"month":"2026-06","week":"Week 2","platform":"TikTok","views":4,"likes":1,"shares":0,"content":1},{"month":"2026-06","week":"Week 2","platform":"Instagram","views":1,"likes":2,"shares":0,"content":1},{"month":"2026-06","week":"Week 2","platform":"YouTube","views":29,"likes":2,"shares":0,"content":2},{"month":"2026-06","week":"Week 2","platform":"LinkedIn","views":37,"likes":2,"shares":0,"content":0},{"month":"2026-06","week":"Week 2","platform":"X (Twitter)","views":23,"likes":2,"shares":0,"content":1},{"month":"2026-06","week":"Week 3","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 3","platform":"TikTok","views":2,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 3","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 4","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 4","platform":"TikTok","views":1,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-06","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 1","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 2","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 2","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-07","week":"Week 3","platform":"Facebook","views":345,"likes":747,"shares":15,"content":4},{"month":"2026-07","week":"Week 3","platform":"TikTok","views":195,"likes":3,"shares":2,"content":1},{"month":"2026-07","week":"Week 3","platform":"Instagram","views":1,"likes":1007,"shares":0,"content":3},{"month":"2026-07","week":"Week 3","platform":"YouTube","views":174,"likes":3,"shares":4,"content":3},{"month":"2026-07","week":"Week 3","platform":"LinkedIn","views":215,"likes":4,"shares":4,"content":4},{"month":"2026-07","week":"Week 3","platform":"X (Twitter)","views":52,"likes":5,"shares":4,"content":4},{"month":"2026-07","week":"Week 4","platform":"Facebook","views":1233,"likes":552,"shares":23,"content":2},{"month":"2026-07","week":"Week 4","platform":"TikTok","views":1116,"likes":2,"shares":0,"content":2},{"month":"2026-07","week":"Week 4","platform":"Instagram","views":1207,"likes":512,"shares":0,"content":2},{"month":"2026-07","week":"Week 4","platform":"YouTube","views":2,"likes":2,"shares":2,"content":2},{"month":"2026-07","week":"Week 4","platform":"LinkedIn","views":105,"likes":2,"shares":2,"content":2},{"month":"2026-07","week":"Week 4","platform":"X (Twitter)","views":26,"likes":2,"shares":1,"content":2},{"month":"2026-07","week":"Week 5","platform":"Facebook","views":25,"likes":8,"shares":2,"content":1},{"month":"2026-07","week":"Week 5","platform":"TikTok","views":95,"likes":1,"shares":0,"content":1},{"month":"2026-07","week":"Week 5","platform":"Instagram","views":160,"likes":2,"shares":0,"content":1},{"month":"2026-07","week":"Week 5","platform":"YouTube","views":1,"likes":1,"shares":0,"content":1},{"month":"2026-07","week":"Week 5","platform":"LinkedIn","views":29,"likes":3,"shares":1,"content":1},{"month":"2026-07","week":"Week 5","platform":"X (Twitter)","views":5,"likes":1,"shares":1,"content":1},{"month":"2026-08","week":"Week 1","platform":"Facebook","views":69,"likes":19,"shares":6,"content":3},{"month":"2026-08","week":"Week 1","platform":"TikTok","views":312,"likes":7,"shares":0,"content":3},{"month":"2026-08","week":"Week 1","platform":"Instagram","views":16,"likes":16,"shares":1,"content":3},{"month":"2026-08","week":"Week 1","platform":"YouTube","views":7,"likes":7,"shares":0,"content":3},{"month":"2026-08","week":"Week 1","platform":"LinkedIn","views":123,"likes":50,"shares":3,"content":3},{"month":"2026-08","week":"Week 1","platform":"X (Twitter)","views":44,"likes":5,"shares":0,"content":3},{"month":"2026-08","week":"Week 2","platform":"Facebook","views":1207,"likes":15,"shares":3,"content":3},{"month":"2026-08","week":"Week 2","platform":"TikTok","views":367,"likes":10,"shares":1,"content":3},{"month":"2026-08","week":"Week 2","platform":"Instagram","views":1219,"likes":13,"shares":1,"content":3},{"month":"2026-08","week":"Week 2","platform":"YouTube","views":2,"likes":2,"shares":0,"content":1},{"month":"2026-08","week":"Week 2","platform":"LinkedIn","views":593,"likes":358,"shares":0,"content":1},{"month":"2026-08","week":"Week 2","platform":"X (Twitter)","views":20,"likes":4,"shares":0,"content":3},{"month":"2026-08","week":"Week 3","platform":"Facebook","views":791,"likes":486,"shares":3,"content":4},{"month":"2026-08","week":"Week 3","platform":"TikTok","views":309,"likes":8,"shares":0,"content":1},{"month":"2026-08","week":"Week 3","platform":"Instagram","views":117,"likes":459,"shares":1,"content":5},{"month":"2026-08","week":"Week 3","platform":"YouTube","views":76,"likes":7,"shares":1,"content":4},{"month":"2026-08","week":"Week 3","platform":"LinkedIn","views":128,"likes":49,"shares":0,"content":4},{"month":"2026-08","week":"Week 3","platform":"X (Twitter)","views":151,"likes":24,"shares":7,"content":4},{"month":"2026-08","week":"Week 4","platform":"Facebook","views":115,"likes":33,"shares":2,"content":4},{"month":"2026-08","week":"Week 4","platform":"TikTok","views":96,"likes":2,"shares":0,"content":1},{"month":"2026-08","week":"Week 4","platform":"Instagram","views":51,"likes":16,"shares":0,"content":4},{"month":"2026-08","week":"Week 4","platform":"YouTube","views":6,"likes":6,"shares":1,"content":3},{"month":"2026-08","week":"Week 4","platform":"LinkedIn","views":66,"likes":18,"shares":0,"content":4},{"month":"2026-08","week":"Week 4","platform":"X (Twitter)","views":25,"likes":7,"shares":1,"content":4},{"month":"2026-08","week":"Week 5","platform":"Facebook","views":358,"likes":17,"shares":3,"content":2},{"month":"2026-08","week":"Week 5","platform":"TikTok","views":233,"likes":15,"shares":0,"content":1},{"month":"2026-08","week":"Week 5","platform":"Instagram","views":37,"likes":5,"shares":0,"content":2},{"month":"2026-08","week":"Week 5","platform":"YouTube","views":2335,"likes":31,"shares":0,"content":1},{"month":"2026-08","week":"Week 5","platform":"LinkedIn","views":17,"likes":12,"shares":0,"content":1},{"month":"2026-08","week":"Week 5","platform":"X (Twitter)","views":20,"likes":1,"shares":0,"content":1},{"month":"2026-09","week":"Week 1","platform":"Facebook","views":187,"likes":11,"shares":3,"content":5},{"month":"2026-09","week":"Week 1","platform":"TikTok","views":296,"likes":11,"shares":0,"content":4},{"month":"2026-09","week":"Week 1","platform":"Instagram","views":36,"likes":7,"shares":0,"content":4},{"month":"2026-09","week":"Week 1","platform":"YouTube","views":1,"likes":1,"shares":0,"content":2},{"month":"2026-09","week":"Week 1","platform":"LinkedIn","views":121,"likes":9,"shares":1,"content":5},{"month":"2026-09","week":"Week 1","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 2","platform":"Facebook","views":81,"likes":7,"shares":3,"content":4},{"month":"2026-09","week":"Week 2","platform":"TikTok","views":182,"likes":6,"shares":0,"content":2},{"month":"2026-09","week":"Week 2","platform":"Instagram","views":35,"likes":12,"shares":6,"content":4},{"month":"2026-09","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 2","platform":"LinkedIn","views":90,"likes":5,"shares":0,"content":4},{"month":"2026-09","week":"Week 2","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 3","platform":"Facebook","views":80,"likes":9,"shares":4,"content":5},{"month":"2026-09","week":"Week 3","platform":"TikTok","views":251,"likes":4,"shares":0,"content":3},{"month":"2026-09","week":"Week 3","platform":"Instagram","views":48,"likes":10,"shares":0,"content":5},{"month":"2026-09","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 3","platform":"LinkedIn","views":82,"likes":9,"shares":0,"content":5},{"month":"2026-09","week":"Week 3","platform":"X (Twitter)","views":21,"likes":2,"shares":0,"content":2},{"month":"2026-09","week":"Week 4","platform":"Facebook","views":81,"likes":0,"shares":0,"content":1},{"month":"2026-09","week":"Week 4","platform":"TikTok","views":109,"likes":4,"shares":0,"content":2},{"month":"2026-09","week":"Week 4","platform":"Instagram","views":11,"likes":1,"shares":0,"content":1},{"month":"2026-09","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":1},{"month":"2026-09","week":"Week 4","platform":"LinkedIn","views":36,"likes":3,"shares":0,"content":2},{"month":"2026-09","week":"Week 4","platform":"X (Twitter)","views":26,"likes":2,"shares":0,"content":5},{"month":"2026-09","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-09","week":"Week 5","platform":"X (Twitter)","views":7,"likes":0,"shares":0,"content":1},{"month":"2026-10","week":"Week 1","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 1","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 1","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 1","platform":"YouTube","views":0,"likes":0,"shares":0,"content":1},{"month":"2026-10","week":"Week 1","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 1","platform":"X (Twitter)","views":38,"likes":2,"shares":1,"content":4},{"month":"2026-10","week":"Week 2","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 2","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 2","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 2","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 2","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 2","platform":"X (Twitter)","views":48,"likes":1,"shares":0,"content":3},{"month":"2026-10","week":"Week 3","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 3","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 3","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 3","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 3","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 3","platform":"X (Twitter)","views":2,"likes":0,"shares":0,"content":1},{"month":"2026-10","week":"Week 4","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 4","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 4","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 4","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 4","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 4","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 5","platform":"Facebook","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 5","platform":"TikTok","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 5","platform":"Instagram","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 5","platform":"YouTube","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 5","platform":"LinkedIn","views":0,"likes":0,"shares":0,"content":0},{"month":"2026-10","week":"Week 5","platform":"X (Twitter)","views":0,"likes":0,"shares":0,"content":0}]};
 const platformNames=['Facebook','Instagram','TikTok','LinkedIn','YouTube','X (Twitter)'];
-const platformColors=['#9ec5e8','#f3a6b9','#b8d8ba','#c8b6e2','#f6c98d','#a9c9d9'];
+const platformColors=['#4ea8ff','#f472b6','#b18cfe','#2dd4bf','#ffb246','#9ccbff'];
 let viewsLikesChart,sharesChart,contentChart;
 function fillFilters(){const m=document.getElementById('monthly-filter');weeklyComparison.months.forEach(x=>{const o=document.createElement('option');o.value=x.key;o.textContent=x.label;m.appendChild(o)});const p=document.getElementById('platform-filter');platformNames.forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;p.appendChild(o)})}
 function filteredRows(){const w=document.getElementById('weekly-filter').value,m=document.getElementById('monthly-filter').value,p=document.getElementById('platform-filter').value;return weeklyComparison.rows.filter(r=>(w==='All'||r.week===w)&&(m==='All'||r.month===m)&&(p==='All'||r.platform===p))}
 function weeks(){const w=document.getElementById('weekly-filter').value;return w==='All'?['Week 1','Week 2','Week 3','Week 4','Week 5']:[w]}
 function total(rows,w,k){return rows.filter(r=>r.week===w).reduce((n,r)=>n+Number(r[k]||0),0)}
 function opts(){return{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+Number(c.raw||0).toLocaleString()}}}}}
-function renderCharts(){const rows=filteredRows(),ws=weeks();if(viewsLikesChart)viewsLikesChart.destroy();const bo=opts();bo.scales={y:{beginAtZero:true,title:{display:true,text:'Total Count'},ticks:{precision:0}},x:{title:{display:true,text:'Week'}}};viewsLikesChart=new Chart(document.getElementById('weekly-views-likes'),{type:'bar',data:{labels:ws,datasets:[{label:'Views',data:ws.map(w=>total(rows,w,'views')),backgroundColor:'#a9c9e8',borderColor:'#8eb7dc',borderWidth:1},{label:'Likes',data:ws.map(w=>total(rows,w,'likes')),backgroundColor:'#f2b6c6',borderColor:'#e49caf',borderWidth:1}]},options:bo});if(sharesChart)sharesChart.destroy();const ld=platformNames.map((p,i)=>({label:p,data:ws.map(w=>rows.filter(r=>r.week===w&&r.platform===p).reduce((n,r)=>n+Number(r.shares||0),0)),borderColor:platformColors[i],backgroundColor:platformColors[i],pointBackgroundColor:platformColors[i],pointBorderColor:'#fff',pointRadius:5,pointHoverRadius:7,tension:.25,fill:false}));const lo=opts();lo.scales={y:{beginAtZero:true,title:{display:true,text:'Total Shares'},ticks:{precision:0}},x:{title:{display:true,text:'Week'}}};sharesChart=new Chart(document.getElementById('weekly-shares-platform'),{type:'line',data:{labels:ws,datasets:ld},options:lo});if(contentChart)contentChart.destroy();const po=opts();po.plugins.datalabels={color:'#374151',font:{weight:'600'},formatter:(v,c)=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);return Number(v).toLocaleString()+' ('+(t?(v/t*100).toFixed(1):'0.0')+'%)'}};contentChart=new Chart(document.getElementById('weekly-content-distribution'),{type:'pie',data:{labels:ws,datasets:[{label:'Published Posts',data:ws.map(w=>total(rows,w,'content')),backgroundColor:['#b9d7ea','#f3b6c6','#c8e0c5','#d8c7ea','#f5d39b'],borderColor:'#fff',borderWidth:2}]},options:po,plugins:[ChartDataLabels]})}
+function renderCharts(){const rows=filteredRows(),ws=weeks();if(viewsLikesChart)viewsLikesChart.destroy();const bo=opts();bo.scales={y:{beginAtZero:true,title:{display:true,text:'Total Count'},ticks:{precision:0}},x:{title:{display:true,text:'Week'}}};viewsLikesChart=new Chart(document.getElementById('weekly-views-likes'),{type:'bar',data:{labels:ws,datasets:[{label:'Views',data:ws.map(w=>total(rows,w,'views')),backgroundColor:'#4ea8ff',borderColor:'#3e6be8',borderWidth:1},{label:'Likes',data:ws.map(w=>total(rows,w,'likes')),backgroundColor:'#ffb246',borderColor:'#e09a2e',borderWidth:1}]},options:bo});if(sharesChart)sharesChart.destroy();const ld=platformNames.map((p,i)=>({label:p,data:ws.map(w=>rows.filter(r=>r.week===w&&r.platform===p).reduce((n,r)=>n+Number(r.shares||0),0)),borderColor:platformColors[i],backgroundColor:platformColors[i],pointBackgroundColor:platformColors[i],pointBorderColor:'#fff',pointRadius:5,pointHoverRadius:7,tension:.25,fill:false}));const lo=opts();lo.scales={y:{beginAtZero:true,title:{display:true,text:'Total Shares'},ticks:{precision:0}},x:{title:{display:true,text:'Week'}}};sharesChart=new Chart(document.getElementById('weekly-shares-platform'),{type:'line',data:{labels:ws,datasets:ld},options:lo});if(contentChart)contentChart.destroy();const po=opts();po.plugins.datalabels={color:'#e6ebf5',font:{weight:'600'},formatter:(v,c)=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);return Number(v).toLocaleString()+' ('+(t?(v/t*100).toFixed(1):'0.0')+'%)'}};contentChart=new Chart(document.getElementById('weekly-content-distribution'),{type:'pie',data:{labels:ws,datasets:[{label:'Published Posts',data:ws.map(w=>total(rows,w,'content')),backgroundColor:['#4ea8ff','#f472b6','#2dd4bf','#b18cfe','#ffb246'],borderColor:'#12182a',borderWidth:2}]},options:po,plugins:[ChartDataLabels]})}
 function selectPlatform(platform){const filter=document.getElementById('platform-filter');filter.value=platform;document.getElementById('platform-selection').textContent='Showing data for '+platform+'.';document.querySelectorAll('.platform-link').forEach(link=>link.setAttribute('aria-pressed',String(link.dataset.platform===platform)));renderCharts();document.getElementById('weekly-comparison').scrollIntoView({behavior:'smooth',block:'start'})}
 function setupPlatformLinks(){document.querySelectorAll('.platform-link').forEach(link=>link.addEventListener('click',()=>selectPlatform(link.dataset.platform)))}
 document.querySelectorAll('.weekly-controls select').forEach(x=>x.addEventListener('change',()=>{if(x.id==='platform-filter'){const platform=x.value;document.getElementById('platform-selection').textContent=platform==='All'?'Showing data for all platforms.':'Showing data for '+platform+'.';document.querySelectorAll('.platform-link').forEach(link=>link.setAttribute('aria-pressed',String(link.dataset.platform===platform)))}renderCharts()}));fillFilters();setupPlatformLinks();renderCharts();

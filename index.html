@@ -54,7 +54,7 @@ body {
 .chip b { color: var(--dim); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; font-size: 9px; margin-right: 5px; }
 
 /* ── Shell: sidebar + main ── */
-.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 20px; padding: 20px 22px 26px; max-width: 1780px; margin: 0 auto; align-items: start; }
+.shell { display: grid; grid-template-columns: 254px minmax(0, 1fr); gap: 20px; padding: 20px 22px 26px; max-width: 1780px; margin: 0 auto; align-items: start; }
 .sidebar { position: sticky; top: 16px; background: linear-gradient(180deg, rgba(23,44,87,.55), rgba(18,24,42,.9)); border: 1px solid var(--line-2); border-radius: var(--radius); padding: 14px 12px; }
 .side-group { font-size: 9px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); padding: 10px 10px 7px; }
 .powered { margin-top: 14px; padding: 11px; border-radius: 11px; background: rgba(9,14,26,.6); border: 1px solid var(--line); text-align: center; }
@@ -63,15 +63,15 @@ body {
 .side-note { padding: 9px 10px 2px; font-size: 10px; color: #8c99ad; line-height: 1.45; }
 
 /* the two sub-buttons, styled as sidebar nav items */
-.tabbar { display: flex; flex-direction: column; gap: 5px; }
-.tab { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: 12.5px; font-weight: 600; text-align: left; cursor: pointer; transition: background .16s, color .16s, border-color .16s; position: relative; }
+.tabbar { display: grid; grid-template-rows: 1fr 1fr; gap: 5px; }
+.tab { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; transition: background .16s, color .16s, border-color .16s; position: relative; }
 .tab:hover { background: rgba(255,255,255,.05); color: var(--text); }
 .tab[aria-selected="true"] { background: linear-gradient(90deg, rgba(62,107,232,.30), rgba(62,107,232,.06)); color: #fff; border-color: rgba(78,168,255,.4); }
 .tab[aria-selected="true"]::before { content: ''; position: absolute; left: 0; top: 9px; bottom: 9px; width: 3px; border-radius: 0 3px 3px 0; background: var(--blue); box-shadow: 0 0 10px var(--blue); }
 .tab:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(78,168,255,.3); }
 .tab .tab-ico { width: 28px; height: 28px; flex: 0 0 28px; border-radius: 8px; background: rgba(78,168,255,.14); display: flex; align-items: center; justify-content: center; font-size: 14px; }
 .tab[aria-selected="true"] .tab-ico { background: rgba(78,168,255,.3); }
-.tab .tab-sub { display: block; font-size: 10px; font-weight: 500; color: var(--dim); margin-top: 1px; }
+.tab .tab-sub { display: block; font-size: 10px; font-weight: 500; color: var(--dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tab[aria-selected="true"] .tab-sub { color: #a8c4e8; }
 .view { display: none; }
 .view.active { display: block; }
@@ -210,8 +210,8 @@ tr:hover td { background: rgba(255,255,255,.028); }
 @media (max-width: 1180px) {
   .shell { grid-template-columns: 1fr; }
   .sidebar { position: static; }
-  .tabbar { flex-direction: row; flex-wrap: wrap; }
-  .tab { flex: 1 1 220px; }
+  .tabbar { grid-template-rows: none; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tab { width: auto; }
   .weekly-chart-grid, .cal-controls, .ring-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .chart-card.full { grid-column: auto; }
 }
@@ -221,7 +221,7 @@ tr:hover td { background: rgba(255,255,255,.028); }
   .section { padding: 15px; }
   .subhead h1 { font-size: 17px; }
   .weekly-controls, .weekly-chart-grid, .cal-controls, .post-grid, .ring-grid { grid-template-columns: 1fr; }
-  .tab { flex: 1 1 100%; }
+  .tabbar { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -240,7 +240,7 @@ tr:hover td { background: rgba(255,255,255,.028); }
     <span class="ctl"><span class="ctl-lbl">View</span><span class="seg"><i class="on">Reports</i><i>Calendar</i></span></span>
     <span class="ctl"><span class="ctl-lbl">Dark</span><span class="sw" aria-hidden="true"></span></span>
     <span class="ctl"><span class="seg"><i class="on">EN</i><i>&#20013;&#25991;</i></span></span>
-    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 15, 2026 at 05:19 PM PHT</span></span>
+    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 15, 2026 at 05:20 PM PHT</span></span>
   </div>
 </div>
 
@@ -265,7 +265,7 @@ tr:hover td { background: rgba(255,255,255,.028); }
       </button>
       <button type="button" class="tab" role="tab" id="tab-calendar" aria-selected="false" aria-controls="view-calendar" data-view="view-calendar">
         <span class="tab-ico" aria-hidden="true">&#128197;</span>
-        <span>Marketing Content Calendar<span class="tab-sub">Posts &middot; published &amp; to post</span></span>
+        <span>Marketing Content Calendar<span class="tab-sub">Posts &amp; schedule</span></span>
       </button>
     </div>
     <div class="side-note">Both views refresh automatically from the Lark Base. Use the tabs to switch.</div>
@@ -3221,7 +3221,7 @@ Join us as we power the future of gaming — because here, you can truly GAME EV
 </div>
 
 <div class="footer">
-  Generated on October 15, 2026 at 05:19 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
+  Generated on October 15, 2026 at 05:20 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
 </div>
 
 </div>

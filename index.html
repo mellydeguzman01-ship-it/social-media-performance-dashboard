@@ -69,9 +69,9 @@ html { color-scheme: dark; scrollbar-color: rgba(124,148,190,.42) transparent; s
 .powered .pw-mark { margin-top: 7px; font-size: 12px; font-weight: 800; letter-spacing: .04em; background: linear-gradient(90deg, var(--amber), var(--violet), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .side-note { padding: 9px 10px 2px; font-size: 10px; color: #8c99ad; line-height: 1.45; }
 
-/* sidebar nav items: two in-page views + one external tool */
+/* sidebar nav: three in-page views */
 .navstack { display: grid; gap: 5px; }
-.tabbar { display: grid; grid-template-rows: 1fr 1fr; gap: 5px; }
+.tabbar { display: grid; grid-template-rows: 1fr 1fr 1fr; gap: 5px; }
 .tab { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; transition: background .16s, color .16s, border-color .16s; position: relative; }
 .tab:hover { background: rgba(255,255,255,.05); color: var(--text); }
 .tab[aria-selected="true"] { background: linear-gradient(90deg, rgba(62,107,232,.30), rgba(62,107,232,.06)); color: #fff; border-color: rgba(78,168,255,.4); }
@@ -81,10 +81,15 @@ html { color-scheme: dark; scrollbar-color: rgba(124,148,190,.42) transparent; s
 .tab[aria-selected="true"] .tab-ico { background: rgba(78,168,255,.3); }
 .tab .tab-sub { display: block; font-size: 10px; font-weight: 500; color: var(--dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tab[aria-selected="true"] .tab-sub { color: #a8c4e8; }
-.tab.navlink { text-decoration: none; font: inherit; font-size: 12px; font-weight: 600; }
-.tab.navlink:hover { border-color: rgba(78,168,255,.34); }
-.tab.navlink .ext { margin-left: auto; font-size: 10px; color: var(--dim); flex: 0 0 auto; }
-.tab.navlink:hover .ext { color: #a8c4e8; }
+/* embedded third view: the AI Content Studio runs inside this page, not a new tab */
+.embed-wrap { border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; background: var(--panel); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.embed-bar { display: flex; align-items: center; gap: 11px; padding: 11px 14px; background: linear-gradient(180deg, rgba(37,55,91,.75), rgba(18,24,42,.55)); border-bottom: 1px solid var(--line); }
+.embed-bar .eb-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); flex: 0 0 8px; }
+.embed-bar .eb-title { font-size: 12.5px; font-weight: 700; }
+.embed-bar .eb-sub { font-size: 10.5px; color: var(--dim); margin-top: 2px; }
+.embed-bar .eb-open { margin-left: auto; flex: 0 0 auto; font-size: 10.5px; font-weight: 600; color: var(--muted); text-decoration: none; border: 1px solid var(--line-2); border-radius: 9px; padding: 6px 11px; transition: color .16s, border-color .16s; }
+.embed-bar .eb-open:hover { color: #fff; border-color: rgba(78,168,255,.45); }
+.embed-frame { display: block; width: 100%; height: calc(100vh - 176px); min-height: 880px; border: 0; background: #0f1424; }
 .view { display: none; }
 .view.active { display: block; }
 
@@ -252,7 +257,7 @@ tr:hover td { background: rgba(255,255,255,.028); }
 @media (max-width: 1180px) {
   .shell { grid-template-columns: 1fr; }
   .sidebar { position: static; }
-  .tabbar { grid-template-rows: none; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tabbar { grid-template-rows: none; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .tab { width: auto; }
   .weekly-chart-grid, .cal-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .plat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -285,7 +290,7 @@ tr:hover td { background: rgba(255,255,255,.028); }
     <span class="ctl"><span class="ctl-lbl">View</span><span class="seg"><i class="on">Reports</i><i>Calendar</i></span></span>
     <span class="ctl"><span class="ctl-lbl">Dark</span><span class="sw" aria-hidden="true"></span></span>
     <span class="ctl"><span class="seg"><i class="on">EN</i><i>&#20013;&#25991;</i></span></span>
-    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 16, 2026 at 01:59 PM PHT</span></span>
+    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 16, 2026 at 02:08 PM PHT</span></span>
   </div>
 </div>
 
@@ -314,13 +319,12 @@ tr:hover td { background: rgba(255,255,255,.028); }
           <span>Marketing Content Calendar<span class="tab-sub">Posts &amp; schedule</span></span>
         </button>
       </div>
-      <a class="tab navlink" href="https://mellydeguzman01-ship-it.github.io/ai-content-studio/" target="_blank" rel="noopener noreferrer">
+      <button type="button" class="tab" role="tab" id="tab-generate" aria-selected="false" aria-controls="view-generate" data-view="view-generate">
         <span class="tab-ico" aria-hidden="true">&#10024;</span>
         <span>Content Generation<span class="tab-sub">AI Content Studio</span></span>
-        <span class="ext" aria-hidden="true">&#8599;</span>
-      </a>
+      </button>
     </div>
-    <div class="side-note">Dashboard and calendar refresh automatically from the Lark Base. Content Generation opens the AI Content Studio.</div>
+    <div class="side-note">All three tools run on this page. Dashboard and calendar refresh automatically from the Lark Base; Content Generation runs the AI Content Studio inline.</div>
     <div class="powered"><div class="pw-lbl">Powered by</div><div class="pw-mark">GAME ENGINE</div></div>
   </aside>
   <main class="main">
@@ -3275,11 +3279,25 @@ Join us as we power the future of gaming — because here, you can truly GAME EV
 </div>
 
 </div>
+
+    <div class="view" id="view-generate">
+      <div class="embed-wrap">
+        <div class="embed-bar">
+          <span class="eb-dot" aria-hidden="true"></span>
+          <div>
+            <div class="eb-title">Content Generation</div>
+            <div class="eb-sub">AI Content Studio &middot; posters, visuals &amp; captions</div>
+          </div>
+          <a class="eb-open" href="https://mellydeguzman01-ship-it.github.io/ai-content-studio/" target="_blank" rel="noopener noreferrer">Open full screen &#8599;</a>
+        </div>
+        <iframe class="embed-frame" src="https://mellydeguzman01-ship-it.github.io/ai-content-studio/" title="AI Content Studio &mdash; Content Generation" loading="lazy" allow="clipboard-write"></iframe>
+      </div>
+    </div>
   </main>
 </div>
 
 <div class="footer">
-  Generated on October 16, 2026 at 01:59 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
+  Generated on October 16, 2026 at 02:08 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
 </div>
 
 </div>
@@ -3301,7 +3319,7 @@ function selectPlatform(platform){const filter=document.getElementById('platform
 function setupPlatformLinks(){document.querySelectorAll('.platform-link').forEach(link=>link.addEventListener('click',()=>selectPlatform(link.dataset.platform)))}
 document.querySelectorAll('.weekly-controls select').forEach(x=>x.addEventListener('change',()=>{if(x.id==='platform-filter'){const platform=x.value;document.getElementById('platform-selection').textContent=platform==='All'?'Showing data for all platforms.':'Showing data for '+platform+'.';document.querySelectorAll('.platform-link').forEach(link=>link.setAttribute('aria-pressed',String(link.dataset.platform===platform)))}renderCharts()}));fillFilters();setupPlatformLinks();renderCharts();
 
-/* ── Sub-button navigation: swap between the two views ── */
+/* ── Sub-button navigation: swap between the three views ── */
 function showView(id){
   document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id===id)});
   document.querySelectorAll('.tab').forEach(function(t){t.setAttribute('aria-selected',String(t.dataset.view===id))});
@@ -3370,6 +3388,7 @@ if(document.querySelector('.post-card')){calApply()}
 })();
 /* Deep link: open the calendar directly when the URL carries its hash. */
 if(location.hash==='#view-calendar'){showView('view-calendar')}
+else if(location.hash==='#view-generate'){showView('view-generate')}
 </script>
 </body>
 </html>

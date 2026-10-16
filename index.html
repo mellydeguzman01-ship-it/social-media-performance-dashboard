@@ -62,7 +62,8 @@ body {
 .powered .pw-mark { margin-top: 7px; font-size: 12px; font-weight: 800; letter-spacing: .04em; background: linear-gradient(90deg, var(--amber), var(--violet), var(--blue)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .side-note { padding: 9px 10px 2px; font-size: 10px; color: #8c99ad; line-height: 1.45; }
 
-/* the two sub-buttons, styled as sidebar nav items */
+/* sidebar nav items: two in-page views + one external tool */
+.navstack { display: grid; gap: 5px; }
 .tabbar { display: grid; grid-template-rows: 1fr 1fr; gap: 5px; }
 .tab { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 11px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: var(--muted); font: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; transition: background .16s, color .16s, border-color .16s; position: relative; }
 .tab:hover { background: rgba(255,255,255,.05); color: var(--text); }
@@ -73,6 +74,10 @@ body {
 .tab[aria-selected="true"] .tab-ico { background: rgba(78,168,255,.3); }
 .tab .tab-sub { display: block; font-size: 10px; font-weight: 500; color: var(--dim); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tab[aria-selected="true"] .tab-sub { color: #a8c4e8; }
+.tab.navlink { text-decoration: none; font: inherit; font-size: 12px; font-weight: 600; }
+.tab.navlink:hover { border-color: rgba(78,168,255,.34); }
+.tab.navlink .ext { margin-left: auto; font-size: 10px; color: var(--dim); flex: 0 0 auto; }
+.tab.navlink:hover .ext { color: #a8c4e8; }
 .view { display: none; }
 .view.active { display: block; }
 
@@ -273,7 +278,7 @@ tr:hover td { background: rgba(255,255,255,.028); }
     <span class="ctl"><span class="ctl-lbl">View</span><span class="seg"><i class="on">Reports</i><i>Calendar</i></span></span>
     <span class="ctl"><span class="ctl-lbl">Dark</span><span class="sw" aria-hidden="true"></span></span>
     <span class="ctl"><span class="seg"><i class="on">EN</i><i>&#20013;&#25991;</i></span></span>
-    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 16, 2026 at 12:32 PM PHT</span></span>
+    <span class="ctl"><span class="ctl-lbl">Updated</span><span class="clock">October 16, 2026 at 01:52 PM PHT</span></span>
   </div>
 </div>
 
@@ -291,17 +296,24 @@ tr:hover td { background: rgba(255,255,255,.028); }
 <div class="shell">
   <aside class="sidebar">
     <div class="side-group">Social Media</div>
-    <div class="tabbar" role="tablist" aria-label="Report sections">
-      <button type="button" class="tab" role="tab" id="tab-social" aria-selected="true" aria-controls="view-social" data-view="view-social">
-        <span class="tab-ico" aria-hidden="true">&#128202;</span>
-        <span>Social Media Dashboard<span class="tab-sub">Daily &middot; Weekly &middot; Monthly</span></span>
-      </button>
-      <button type="button" class="tab" role="tab" id="tab-calendar" aria-selected="false" aria-controls="view-calendar" data-view="view-calendar">
-        <span class="tab-ico" aria-hidden="true">&#128197;</span>
-        <span>Marketing Content Calendar<span class="tab-sub">Posts &amp; schedule</span></span>
-      </button>
+    <div class="navstack">
+      <div class="tabbar" role="tablist" aria-label="Report sections">
+        <button type="button" class="tab" role="tab" id="tab-social" aria-selected="true" aria-controls="view-social" data-view="view-social">
+          <span class="tab-ico" aria-hidden="true">&#128202;</span>
+          <span>Social Media Dashboard<span class="tab-sub">Daily &middot; Weekly &middot; Monthly</span></span>
+        </button>
+        <button type="button" class="tab" role="tab" id="tab-calendar" aria-selected="false" aria-controls="view-calendar" data-view="view-calendar">
+          <span class="tab-ico" aria-hidden="true">&#128197;</span>
+          <span>Marketing Content Calendar<span class="tab-sub">Posts &amp; schedule</span></span>
+        </button>
+      </div>
+      <a class="tab navlink" href="https://mellydeguzman01-ship-it.github.io/ai-content-studio/" target="_blank" rel="noopener noreferrer">
+        <span class="tab-ico" aria-hidden="true">&#10024;</span>
+        <span>Content Generation<span class="tab-sub">AI Content Studio</span></span>
+        <span class="ext" aria-hidden="true">&#8599;</span>
+      </a>
     </div>
-    <div class="side-note">Both views refresh automatically from the Lark Base. Use the tabs to switch.</div>
+    <div class="side-note">Dashboard and calendar refresh automatically from the Lark Base. Content Generation opens the AI Content Studio.</div>
     <div class="powered"><div class="pw-lbl">Powered by</div><div class="pw-mark">GAME ENGINE</div></div>
   </aside>
   <main class="main">
@@ -3260,7 +3272,7 @@ Join us as we power the future of gaming — because here, you can truly GAME EV
 </div>
 
 <div class="footer">
-  Generated on October 16, 2026 at 12:32 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
+  Generated on October 16, 2026 at 01:52 PM PHT &bull; Auto-refreshed with live data &bull; Period: Nov 2025 – Oct 2026
 </div>
 
 </div>
